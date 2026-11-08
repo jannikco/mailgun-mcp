@@ -1,0 +1,266 @@
+{
+  "schemaVersion": 1,
+  "id": "mailgun-mcp",
+  "kind": "provider-connector",
+  "artifactType": "connector",
+  "qualityVersion": 2,
+  "title": "Mailgun MCP server",
+  "description": "Inspect configured sending domains and their verification details without sending messages.",
+  "status": "ready",
+  "verification": "mock-only",
+  "releaseEligible": true,
+  "maintainer": "jannikco",
+  "license": "MIT",
+  "product": "pipmcp",
+  "appSlug": "mailgun",
+  "appName": "Mailgun",
+  "operationIds": [
+    "mailgun_list_domains",
+    "mailgun_get_domain"
+  ],
+  "sourceRevision": "70d54976d85d7cdf6607fd4c5b99fe6cae9d134aac4d73680b8877fd54c759c7",
+  "evidence": [
+    "Actual tools/call and direct-provider request contract tests"
+  ],
+  "provenance": [
+    "https://documentation.mailgun.com/docs/mailgun/api-reference/send/mailgun/domains"
+  ],
+  "attributionSlug": "github-mailgun-mcp",
+  "connectorId": "mailgun",
+  "connector": {
+    "id": "mailgun",
+    "name": "Mailgun",
+    "version": "0.1.0",
+    "baseUrl": "https://api.mailgun.net",
+    "auth": {
+      "type": "basic",
+      "usernameEnv": "MAILGUN_BASIC_USERNAME",
+      "passwordEnv": "MAILGUN_API_KEY"
+    },
+    "tools": [
+      {
+        "name": "mailgun_list_domains",
+        "description": "Read one page of US-region sending domains.",
+        "method": "GET",
+        "path": "/v4/domains",
+        "readOnly": true,
+        "approvalRequired": false,
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "skip": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        },
+        "bindings": {
+          "path": [],
+          "query": {
+            "limit": "limit",
+            "skip": "skip"
+          },
+          "body": {}
+        },
+        "sampleArguments": {
+          "limit": 10
+        },
+        "evidence": {
+          "state": "documented",
+          "providerLiveValidation": "not-run"
+        },
+        "provenance": [
+          "https://documentation.mailgun.com/docs/mailgun/api-reference/send/mailgun/domains"
+        ]
+      },
+      {
+        "name": "mailgun_get_domain",
+        "description": "Read sending-domain details; this is not a message delivery test.",
+        "method": "GET",
+        "path": "/v4/domains/{domain}",
+        "readOnly": true,
+        "approvalRequired": false,
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "domain": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "domain"
+          ],
+          "additionalProperties": false
+        },
+        "bindings": {
+          "path": [
+            "domain"
+          ],
+          "query": {},
+          "body": {}
+        },
+        "sampleArguments": {
+          "domain": "sandbox.example.com"
+        },
+        "evidence": {
+          "state": "documented",
+          "providerLiveValidation": "not-run"
+        },
+        "provenance": [
+          "https://documentation.mailgun.com/docs/mailgun/api-reference/send/mailgun/domains"
+        ]
+      }
+    ],
+    "workflow": {
+      "name": "Mailgun authorized workflow",
+      "description": "Inspect configured sending domains and their verification details without sending messages.",
+      "steps": [
+        "mailgun_list_domains",
+        "mailgun_get_domain"
+      ]
+    },
+    "provenance": [
+      "https://documentation.mailgun.com/docs/mailgun/api-reference/send/mailgun/domains"
+    ],
+    "sourceEvidence": {
+      "state": "documented",
+      "providerLiveValidation": "not-run",
+      "checkedAt": "2026-11-08",
+      "operationCount": 2,
+      "kind": "official-reference",
+      "sha256": "b7ce474ad2150b48e4565ce4d7d093a8e27cb6ae53aed9572d07ea1d17ba1882",
+      "sources": [
+        {
+          "url": "https://documentation.mailgun.com/docs/mailgun/api-reference/send/mailgun/domains",
+          "sha256": "b7ce474ad2150b48e4565ce4d7d093a8e27cb6ae53aed9572d07ea1d17ba1882",
+          "checkedAt": "2026-11-08T13:13:00.535839+00:00"
+        }
+      ]
+    },
+    "setup": {
+      "requiresPipMcpAccount": false,
+      "credentialsHelpUrl": "https://documentation.mailgun.com/docs/mailgun/api-reference/send/mailgun/domains",
+      "instructions": "Set MAILGUN_BASIC_USERNAME to api and your own private API key. This manifest targets US api.mailgun.net; EU-region accounts require api.eu.mailgun.net in a separately reviewed manifest. Sending is intentionally absent because the current runtime does not implement Mailgun multipart/form-data."
+    },
+    "sampleWarning": "Example IDs and email addresses are placeholders. Replace them with records and recipients you are authorized to access. Samples do not authorize writes. HTTP/fixture success does not prove provider execution or email delivery.",
+    "limitations": [
+      "Read-only domain inspection. No message-sending tool: multipart/form-data is not supported by this runtime."
+    ],
+    "appSlug": "mailgun",
+    "repoId": "mailgun-mcp",
+    "product": "pipmcp",
+    "artifactType": "connector",
+    "sourceRevision": "70d54976d85d7cdf6607fd4c5b99fe6cae9d134aac4d73680b8877fd54c759c7",
+    "capabilityEvidence": {
+      "local": {
+        "level": "Tested",
+        "operations": [
+          {
+            "name": "mailgun_list_domains",
+            "level": "Tested",
+            "evidenceRefs": [
+              "Provider request/stdio contract tests"
+            ],
+            "method": "contract-fixture"
+          },
+          {
+            "name": "mailgun_get_domain",
+            "level": "Tested",
+            "evidenceRefs": [
+              "Provider request/stdio contract tests"
+            ],
+            "method": "contract-fixture"
+          }
+        ],
+        "evidenceRefs": [
+          "Provider request/stdio contract tests"
+        ],
+        "mode": "local"
+      },
+      "managed": {
+        "level": "Documented",
+        "operations": [
+          {
+            "name": "mailgun_list_domains",
+            "level": "Documented",
+            "evidenceRefs": [],
+            "method": "documentation"
+          },
+          {
+            "name": "mailgun_get_domain",
+            "level": "Documented",
+            "evidenceRefs": [],
+            "method": "documentation"
+          }
+        ],
+        "evidenceRefs": [],
+        "mode": "managed"
+      }
+    },
+    "managedAvailability": {
+      "status": "listed",
+      "checkedAt": "2026-11-08T13:20:45.156456+00:00"
+    }
+  },
+  "capabilityEvidence": {
+    "local": {
+      "level": "Tested",
+      "operations": [
+        {
+          "name": "mailgun_list_domains",
+          "level": "Tested",
+          "evidenceRefs": [
+            "Provider request/stdio contract tests"
+          ],
+          "method": "contract-fixture"
+        },
+        {
+          "name": "mailgun_get_domain",
+          "level": "Tested",
+          "evidenceRefs": [
+            "Provider request/stdio contract tests"
+          ],
+          "method": "contract-fixture"
+        }
+      ],
+      "evidenceRefs": [
+        "Provider request/stdio contract tests"
+      ],
+      "mode": "local"
+    },
+    "managed": {
+      "level": "Documented",
+      "operations": [
+        {
+          "name": "mailgun_list_domains",
+          "level": "Documented",
+          "evidenceRefs": [],
+          "method": "documentation"
+        },
+        {
+          "name": "mailgun_get_domain",
+          "level": "Documented",
+          "evidenceRefs": [],
+          "method": "documentation"
+        }
+      ],
+      "evidenceRefs": [],
+      "mode": "managed"
+    }
+  },
+  "utility": {
+    "problem": "Inspect configured sending domains and their verification details without sending messages.",
+    "output": "Actual provider API results through local MCP tools"
+  },
+  "providerDocs": "https://documentation.mailgun.com/docs/mailgun/api-reference/send/mailgun/domains",
+  "factory": "leadadapter-pipmcp",
+  "generatorVersion": 2
+}
