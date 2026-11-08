@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "version": "1.0.0",
+  "product": "pipmcp",
+  "credential": "PIPMCP_API_KEY",
+  "skills": [
+    {
+      "name": "pipmcp-mailgun",
+      "description": "Connect AI agents to Mailgun using one PipMCP API key and actual hosted tool discovery."
+    }
+  ],
+  "files": {
+    "skills/pipmcp-mailgun/SKILL.md": "72b7f359af9e6d550e715ea413df20f4d66478823427222cbd240870c0c9d447"
+  }
+}
